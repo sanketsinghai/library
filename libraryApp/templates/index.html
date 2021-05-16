@@ -1,0 +1,185 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Library Management Dashboard {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <!-- Header -->
+    <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+      <div class="container-fluid">
+        <div class="header-body">
+          <!-- Card stats -->
+          <div class="row">
+            <div class="col-xl-3 col-lg-6">
+            
+              <div class="card card-stats mb-4 mb-xl-0">
+                
+                <div class="card-body">
+                
+                  <div class="row">
+                  
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Total Books</h5>
+                      <span class="h2 font-weight-bold mb-0">{{ total }}</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
+                        <i class="fas fa-chart-bar"></i>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-6">
+              <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Issue Books</h5>
+                      <span class="h2 font-weight-bold mb-0">{{ issuedbook }}</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
+                        <i class="fas fa-chart-pie"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-6">
+              <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Available</h5>
+                      <span class="h2 font-weight-bold mb-0">{{ available }}</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-yellow text-white rounded-circle shadow">
+                        <i class="fas fa-users"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-3 col-lg-6">
+              <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Total admin</h5>
+                      <span class="h2 font-weight-bold mb-0">{{ totaluser }}</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-info text-white rounded-circle shadow">
+                        <i class="fas fa-percent"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="container-fluid mt--7">
+
+
+
+      <div class="row mt-5">
+        <div class="col-xl-8 mb-5 mb-xl-0">
+
+        </div>
+      </div>
+      <div class="card">
+          <!-- Card header -->
+          <div class="card-header border-0">
+            <h3 class="mb-0">Book List</h3><h3> Hello, {{request.user}}</h3>
+          </div>
+          <!-- Light table -->
+          <div class="table-responsive">
+            <table class="table align-items-center table-flush">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col" class="sort" data-sort="name">Book Title</th>
+                  <th scope="col" class="sort" data-sort="budget">ISBN</th>
+                  <th scope="col" class="sort" data-sort="status">Author</th>
+                  <th scope="col">Category</th>
+                  <th scope="col" class="sort" data-sort="completion">ACTION</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              {% for book  in books  %}
+              
+            
+              <tbody class="list">
+                <tr>
+                  <th scope="row">
+                    <div class="media align-items-center">
+                      <a href="#" class="avatar rounded-circle mr-3">
+                        
+                      </a>
+                      <div class="media-body">
+                        <span class="name mb-0 text-sm">{{book.name}}</span>
+                      </div>
+                    </div>
+                  </th>
+                  <td class="budget">
+                    {{book.isbn}}
+                  </td>
+                  <td>
+                    <span class="badge badge-dot mr-4">
+                      <i class="bg-warning"></i>
+                      <span class="status">{{book.author}}</span>
+                    </span>
+                  </td>
+                    <th scope="row">
+                    <div class="media align-items-center">
+                      <div class="media-body">
+                        <span class="name mb-0 text-sm">{{book.category}}</span>
+                      </div>
+                    </div>
+                  </th>
+                  <td>
+       <a href="{% url 'bookadd' %}" ><button type="button" class="btn btn-primary">ADD</button></a>
+       <a href="{% url 'bookdelete' id=book.id %}" ><button type="button" class="btn btn-danger">Delete</button></a>
+       {% if  book.status %}
+        <a href="{% url 'reverse' id=book.id %}" ><button type="button" class="btn btn-light">Issue</button></a>
+       
+       {% else %}
+      <a href="{% url 'reverse' id=book.id %}" ><button type="button" class="btn btn-danger">Issued</button></a>
+       {% endif %}
+  
+       <a href="#" ><button type="button" class="btn btn-primary">View</button></a>
+       
+                  </td>
+                </tr>  
+              </tbody>
+                {% endfor %}
+            </table>
+          </div>
+          <!-- Card footer -->
+
+        </div>
+
+      {% include "includes/footer.html" %}
+
+
+
+    </div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}{% endblock javascripts %}

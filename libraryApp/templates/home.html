@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<h1> HELLO  {{ request.user}}</h1>
+
+
+<h2> <a href="{% url 'logout' %}" > logout</h2>
+{% endblock %}
